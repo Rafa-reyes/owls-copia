@@ -1,0 +1,23 @@
+{
+  "name": "owls-website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OWLS-CLUB/New-OwlsWebsite.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OWLS-CLUB/New-OwlsWebsite/issues"
+  },
+  "homepage": "https://github.com/OWLS-CLUB/New-OwlsWebsite#readme",
+  "dependencies": {
+    "html-entities": "^2.6.0"
+  }
+}
