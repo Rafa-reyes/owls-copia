@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OWLS - Preguntas Frecuentes</title>
+  <link rel="stylesheet" href="/src/style.css">
+  <script src="/src/main.js" defer></script>
+  <script type="module" src="/src/session.js"></script>
+  <script src="/src/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="icon" href="img/owls.png" type="image/png">
+</head>
+<body class="font-[Inter] bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-white transition-colors">
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 dark:bg-gray-900 dark:text-white sticky top-0 z-50 text-sm transition-colors">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 dark:bg-gray-900 dark:text-white transition-colors">
+      <!-- Marca -->
+      <a href="index.html" class="flex items-center gap-2">
+        <img src="img/owls.png" alt="OWLS logo" class="h-10 w-10 rounded-full" />
+        <span class="text-xl font-bold">OWLS</span>
+      </a>
+      <!-- Nav -->
+      <nav id="mainNav" class="hidden md:flex items-center gap-6 font-small">
+        <a href="index.html" class="hover:text-teal-600">Home</a>
+        <a href="miembros.html" class="hover:text-teal-600">Miembros</a>
+        <a href="ranking.html" class="hover:text-teal-600">Ranking</a>
+        <a href="login.html" class="bg-[#FFA500] hover:bg-orange-500 text-gray-900 font-medium py-1.5 px-4 rounded-lg flex items-center gap-2 transition-colors ml-3 shadow-sm">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Iniciar sesi&oacute;n
+        </a>
+        <button id="themeToggle" type="button" role="switch" aria-label="Cambiar tema" class="ml-2 relative h-6 w-12 shrink-0 rounded-full border border-gray-300 bg-gray-100 transition-colors dark:border-gray-700 dark:bg-gray-800">
+        <span class="absolute left-[3px] top-1/2 grid h-[18px] w-[18px] -translate-y-1/2 place-items-center rounded-full bg-teal-500 text-[9px] text-white transition-transform duration-200 dark:translate-x-[22px]">
+          <i id="themeIcon" class="fa-solid fa-moon"></i>
+        </span>
+      </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero FAQ -->
+  <section class="text-center py-12 px-4 bg-black">
+    <h1 class="text-4xl font-bold text-white">Preguntas Frecuentes</h1>
+    <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Resuelve tus dudas sobre nuestros servicios, equipo y c&oacute;mo operamos en el mundo de la ciberseguridad.</p>
+  </section>
+
+  <!-- Contenido FAQ -->
+  <main class="max-w-4xl mx-auto px-4 py-16 min-h-[50vh]">
+    <div class="space-y-6">
+      
+      <!-- Pregunta 1 -->
+      <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 shadow-sm">
+        <h3 class="text-xl font-semibold mb-2 text-teal-600 dark:text-teal-400">&iquest;Qu&eacute; es OWLS?</h3>
+        <p class="text-gray-700 dark:text-gray-300">OWLS es una empresa y comunidad especializada en servicios de ciberseguridad. Nos enfocamos en brindar soluciones integrales, pentesting, y fortalecer la infraestructura tecnol&oacute;gica de nuestros clientes para crear entornos digitales confiables.</p>
+      </div>
+
+      <!-- Pregunta 2 -->
+      <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 shadow-sm">
+        <h3 class="text-xl font-semibold mb-2 text-teal-600 dark:text-teal-400">&iquest;Qu&eacute; tipo de servicios ofrecen?</h3>
+        <p class="text-gray-700 dark:text-gray-300">Ofrecemos auditor&iacute;as de seguridad, pruebas de penetraci&oacute;n (pentesting), capacitaciones para personal, an&aacute;lisis de vulnerabilidades y consultor&iacute;a para mitigar riesgos en la infraestructura de red y aplicaciones web.</p>
+      </div>
+
+      <!-- Pregunta 3 -->
+      <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 shadow-sm">
+        <h3 class="text-xl font-semibold mb-2 text-teal-600 dark:text-teal-400">&iquest;C&oacute;mo puedo formar parte del equipo?</h3>
+        <p class="text-gray-700 dark:text-gray-300">Constantemente buscamos talento apasionado por la seguridad inform&aacute;tica. Puedes postularte enviando tu CV y portafolio a nuestro correo de contacto <a href="mailto:owls@clubowls.com.mx" class="text-[#FFA500] hover:underline">owls@clubowls.com.mx</a>. Ocasionalmente abrimos convocatorias en nuestras redes sociales.</p>
+      </div>
+
+      <!-- Pregunta 4 -->
+      <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 shadow-sm">
+        <h3 class="text-xl font-semibold mb-2 text-teal-600 dark:text-teal-400">&iquest;Imparten cursos o capacitaciones?</h3>
+        <p class="text-gray-700 dark:text-gray-300">S&iacute;, ofrecemos cursos especializados para miembros internos y talleres externos sobre concientizaci&oacute;n de seguridad, detecci&oacute;n de phishing y fundamentos de ciberseguridad corporativa. Puedes revisar nuestro calendario en la p&aacute;gina principal.</p>
+      </div>
+
+      <!-- Pregunta 5 -->
+      <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 shadow-sm">
+        <h3 class="text-xl font-semibold mb-2 text-teal-600 dark:text-teal-400">&iquest;C&oacute;mo manejan la confidencialidad de los datos?</h3>
+        <p class="text-gray-700 dark:text-gray-300">La  tica profesional es uno de nuestros pilares. Todo servicio de auditor&iacute;a o an&aacute;lisis est&aacute; respaldado por un Acuerdo de Confidencialidad (NDA) estricto. Para m&aacute;s detalles, revisa nuestro <a href="legal.html" class="text-[#FFA500] hover:underline">Aviso de Privacidad</a>.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-black text-slate-300 pt-20 text-sm">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 px-10 pb-20">
+      <!-- Columna 1 -->
+      <div>
+        <h4 class="text-white text-sm font-semibold mb-2">MIEMBROS</h4>
+        <ul class="space-y-1">
+          <li><a href="miembros.html#coordinacion" class="hover:text-teal-500">Coordinaci&oacute;n</a></li>
+          <li><a href="miembros.html#desarrollo-web" class="hover:text-teal-500">Desarrollo Web</a></li>
+          <li><a href="miembros.html#marketing" class="hover:text-teal-500">Marketing</a></li>
+        </ul>
+      </div>
+      <!-- Columna 2 -->
+      <div>
+        <h4 class="text-white text-sm font-semibold mb-2">NOSOTROS</h4>
+        <ul class="space-y-1">
+          <li><a href="index.html#about" class="hover:text-teal-500">Acerca de nosotros</a></li>
+          <li><a href="afiliaciones.html" class="hover:text-teal-500">Afiliaciones</a></li>
+          <li><a href="miembros.html" class="hover:text-teal-500">Comunidad</a></li>
+          <li><a href="preguntas-frecuentes.html" class="hover:text-teal-500 text-teal-500">Preguntas frecuentes</a></li>
+        </ul>
+      </div>
+      <!-- Columna 3 -->
+      <div>
+        <h4 class="text-white text-sm font-semibold mb-2">LEGAL</h4>
+        <ul class="space-y-1">
+          <li><a href="legal.html" class="hover:text-teal-500">Aviso de privacidad</a></li>
+          <li><a href="legal.html" class="hover:text-teal-500">T&eacute;rminos y condiciones</a></li>
+        </ul>
+      </div>
+      <!-- Columna 4 -->
+      <div>
+        <h4 class="text-white text-sm font-semibold mb-2">Contacto</h4>
+        <p>Dudas o sugerencias:
+          <a href="mailto:owls@clubowls.com.mx" class="hover:text-teal-500">owls@clubowls.com.mx</a>
+        </p>
+        <div class="flex flex-wrap gap-3 mt-3 text-lg" aria-label="Redes sociales">
+        <a href="https://www.facebook.com/share/1BHyqFG3Pq" aria-label="Facebook" title="Facebook" class="hover:text-teal-500"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://x.com/clubowls_mx" aria-label="X" title="X (Twitter)" class="hover:text-teal-500"><i class="fab fa-x-twitter"></i></a>
+        <a href="#" aria-label="TikTok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        <a href="https://www.instagram.com/clubowls_mx?igsh=dnU4cTJzZmltaXoy" aria-label="Instagram" title="Instagram" class="hover:text-teal-500"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@clubowls_mx" aria-label="YouTube" title="YouTube" class="hover:text-teal-500"><i class="fab fa-youtube"></i></a>
+      </div>
+      </div>
+    </div>
+    <div class="border-t border-white/10 py-3 text-center text-sm text-slate-400">
+      &copy; 2026 OWLS Web Devs. Todos los derechos reservados.
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OWLS — Home</title>
+  <link rel="stylesheet" href="/src/style.css">
+  <script src="main.js"></script>
+  <script type="module" src="/src/session.js"></script>
+  <script src="/src/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="icon" href="img/owls.png" type="image/png">
+</head>
+<body class="font-[Inter] bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50 text-sm dark:bg-gray-900 dark:border-gray-800 transition-colors">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+      <!-- Marca -->
+      <a href="index.html" class="flex items-center gap-2">
+        <img src="img/owls.png" alt="OWLS logo" class="h-10 w-10 rounded-full" />
+        <span class="text-xl font-bold">OWLS</span>
+      </a>
+
+      <!-- Nav -->
+      <nav id="mainNav" class="hidden md:flex gap-6 font-small">
+        <a href="miembros.html" class="hover:text-teal-600">Miembros</a>
+        <a href="ranking.html" class="hover:text-teal-600">Ranking</a>
+        <a href="login.html" class="bg-[#FFA500] hover:bg-orange-500 text-gray-900 font-medium py-1.5 px-4 rounded-lg flex items-center gap-2 transition-colors ml-3 shadow-sm">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Iniciar sesión
+        </a>
+
+        <button id="themeToggle" type="button" role="switch" aria-label="Cambiar tema" class="ml-2 relative h-6 w-12 shrink-0 rounded-full border border-gray-300 bg-gray-100 transition-colors dark:border-gray-700 dark:bg-gray-800">
+          <span class="absolute left-[3px] top-1/2 grid h-[18px] w-[18px] -translate-y-1/2 place-items-center rounded-full bg-teal-500 text-[9px] text-white transition-transform duration-200 dark:translate-x-[22px]">
+            <i id="themeIcon" class="fa-solid fa-moon"></i>
+          </span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Section -->
+  
+  <!-- Hero -->
+  <section class="text-center px-4 bg-black mb-20 h-screen flex items-center justify-center">
+    <img src="img/owls.png" alt="OWLS logo" class="opacity-10 absolute h-screen"/>
+    <div class="items-center">
+      <h1 class="text-5xl font-bold text-white">Bienvenido a OWLS</h1>
+      <p class="text-gray-500 mt-2">La confianza en un sistema se construye desde la seguridad.
+        <br> Aquí nos encargamos de construirla.</p>
+      <p class="text-gray-500 text-xs italic mt-2 absolute inset-x-0 bottom-5">En el edificio más alto, ahí nos proyectamos.</p>
+    </div>
+  </section>
+
+  <!-- Novedades -->
+  <section class="max-w-5xl mx-auto px-4 mb-30">
+ 
+    <!-- Banner de error (oculto por defecto) -->
+    <div id="novedades-error-banner" class="hidden mb-4 flex items-center justify-between gap-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3">
+      <p id="novedades-error-message" class="text-sm text-red-700">No se pudieron cargar las novedades.</p>
+      <button id="novedades-retry-btn" class="shrink-0 text-sm font-semibold text-red-700 underline hover:text-red-900">
+        Reintentar
+      </button>
+    </div>
+  
+    <div class="relative overflow-hidden rounded-lg bg-white">
+      <button id="novedades-prev" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 px-3 py-2 rounded-md shadow z-10">‹</button>
+  
+      <ul id="novedades-track" class="flex transition-transform duration-350 ease-in-out">
+        <!-- Se llena dinámicamente vía JS (skeleton primero, luego novedades reales) -->
+      </ul>
+  
+      <button id="novedades-next" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 px-3 py-2 rounded-md shadow z-10">›</button>
+    </div>
+  </section>
+    
+  </section>
+
+  <!-- About -->
+  <section class="max-w-6xl mx-auto mb-24 px-4" id="about">
+    <div class="text-center max-w-3xl mx-auto">
+      <img src="img/owls.png" alt="OWLS logo" class="h-40 w-40 rounded-full mx-auto mb-10" />
+      <h2 class="text-3xl font-bold mb-8">Fundación de OWLS</h2>
+      <p class="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">Durante una plácida tarde surge durante una conversación entre los ahora coordinadores de OWLS
+      planteándose como resolver la creciente crisis por falta de ciberseguridad especializada.</p>
+      <p class="leading-relaxed font-medium">Nuestra empresa nace con el objetivo de brindar soluciones integrales en ciberseguridad,
+      protegiendo la información y fortaleciendo la infraestructura tecnológica de nuestros clientes,
+      mientras fomentamos un entorno digital seguro y confiable. Consolidándonos como una empresa
+      competitiva y confiable en el mercado de ciberseguridad, expandiendo nuestra presencia y
+      fortaleciendo alianzas estratégicas para impulsar el crecimiento empresarial y social.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 md:divide-x md:divide-gray-200 md:dark:divide-gray-800 mt-16">
+      <article class="md:pr-10">
+        <h3 class="text-xl font-bold mb-3">Misión</h3>
+        <p class="leading-relaxed text-gray-700 dark:text-gray-300">Brindar servicios especializados de ciberseguridad con un equipo altamente capacitado,
+          ofreciendo soluciones integrales que protejan la información, fortalezcan la infraestructura
+          tecnológica y aporten valor estratégico a nuestros clientes.</p>
+      </article>
+
+      <article class="mt-10 md:mt-0 md:pl-10">
+        <h3 class="text-xl font-bold mb-3">Visión</h3>
+        <p class="leading-relaxed text-gray-700 dark:text-gray-300">Convertirnos en una empresa líder nacional en ciberseguridad, reconocida por su
+          innovación, calidad de servicio y capacidad de generar confianza en el entorno digital,
+          empresarial y social.</p>
+      </article>
+    </div>
+
+    <h2 class="text-2xl font-bold mt-16 mb-3 text-center">Valores</h2>
+    <p class="max-w-3xl mx-auto text-center leading-relaxed text-gray-600 dark:text-gray-400 mb-10">Nuestros valores guían nuestro comportamiento y decisiones, reflejando
+      nuestro compromiso con la excelencia y la integridad. Siendo los principales los que se
+      presentan a continuación:</p>
+
+    <div class="max-w-4xl mx-auto grid sm:grid-cols-2 gap-x-12 gap-y-8">
+      <div>
+        <h3 class="font-bold tracking-wide text-sm mb-1">ÉTICA PROFESIONAL</h3>
+        <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400">Actuar con rectitud, responsabilidad e integridad para garantizar servicios confiables
+          y relaciones armónicas.</p>
+      </div>
+      <div>
+        <h3 class="font-bold tracking-wide text-sm mb-1">HONESTIDAD</h3>
+        <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400">Transparencia en el manejo de la información y compromiso ético para construir
+          confianza en clientes y aliados.</p>
+      </div>
+      <div>
+        <h3 class="font-bold tracking-wide text-sm mb-1">RESPETO</h3>
+        <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400">Tratar con dignidad a colaboradores, clientes y socios, siguiendo normas
+          empresariales y fomentando inclusión.</p>
+      </div>
+      <div>
+        <h3 class="font-bold tracking-wide text-sm mb-1">RESPONSABILIDAD</h3>
+        <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400">Cumplir con estándares legales y contribuir al desarrollo sostenible del entorno
+          digital y social.</p>
+      </div>
+      <div class="sm:col-span-2">
+        <h3 class="font-bold tracking-wide text-sm mb-1">COMUNICACIÓN</h3>
+        <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400">Promover un ambiente colaborativo mediante retroalimentación constante,
+        reduciendo errores y fortaleciendo la innovación.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALENDARIO -->
+    <section class="bg-black py-16 px-4">
+      <div class="mx-auto">
+    
+        <!-- Título -->
+        <h1 class="text-4xl font-extrabold text-white text-center mb-10 tracking-wide">CALENDARIO</h1>
+    
+        <!-- Contenedor blanco redondeado -->
+        <div class="bg-white rounded-[2.5rem] p-8 md:p-10">
+    
+          <!-- Banner de error (oculto por defecto) -->
+          <div id="error-banner" class="mb-6 flex items-center justify-between gap-4 rounded-xl bg-red-50 border border-red-200 px-4 py-3">
+            <p id="error-message" class="text-sm text-red-700">No se pudieron cargar los eventos.</p>
+            <button id="retry-btn" class="shrink-0 text-sm font-semibold text-red-700 underline hover:text-red-900">
+              Reintentar
+            </button>
+          </div>
+    
+          <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-6 items-start">
+
+            <div id="calendar-grid" class="grid grid-cols-1 gap-5">
+              <!-- El mes actual se genera aquí vía JS (skeleton mientras carga, luego datos reales) -->
+            </div>
+
+            <!-- Panel de detalles del día seleccionado -->
+            <aside
+              id="calendar-details"
+              class="bg-slate-50 border border-slate-200 rounded-3xl p-6 min-h-[360px] lg:sticky lg:top-6"
+              aria-live="polite"
+            >
+              <div id="calendar-details-empty" class="h-full min-h-[300px] flex flex-col items-center justify-center text-center">
+                <div class="w-14 h-14 rounded-full bg-indigo-100 text-indigo-500 flex items-center justify-center mb-4">
+                  <i class="fa-regular fa-calendar"></i>
+                </div>
+                <h2 class="text-lg font-bold text-slate-800">Detalles del día</h2>
+                <p class="text-sm text-slate-500 mt-2 max-w-xs">
+                  Selecciona un día del calendario para ver sus actividades.
+                </p>
+              </div>
+
+              <div id="calendar-details-content" class="hidden">
+                <div class="flex items-start justify-between gap-4 mb-5">
+                  <div>
+                    <p class="text-xs uppercase tracking-wider text-indigo-500 font-semibold">Actividades</p>
+                    <h2 id="calendar-details-date" class="text-xl font-bold text-slate-800 mt-1"></h2>
+                  </div>
+                  <span id="calendar-details-count" class="text-xs font-semibold bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">0</span>
+                </div>
+
+                <div id="calendar-details-list" class="space-y-3"></div>
+              </div>
+            </aside>
+
+          </div>
+        </div>
+    
+        <!-- Leyendas de fechas próximas (se actualizan dinámicamente con los datos de la API) -->
+        <div id="upcoming-legend" class="mt-8 flex flex-wrap gap-x-10 gap-y-3 px-2">
+          <span class="flex items-center gap-2 text-white text-sm">
+            <span class="w-2 h-2 rounded-full bg-[#FFA500]"></span>
+            <span id="upcoming-evento">Próximo evento: cargando…</span>
+          </span>
+          <span class="flex items-center gap-2 text-white text-sm">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span id="upcoming-curso">Próximo curso: cargando…</span>
+          </span>
+          <span class="flex items-center gap-2 text-white text-sm">
+            <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+            <span id="upcoming-proyecto">Próximo proyecto: cargando…</span>
+          </span>
+        </div>
+    
+      </div>
+    </section>
+
+  <hr>
+  <!-- Footer -->
+  <footer class="bg-black text-slate-300 pt-20 text-sm">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 px-10 pb-20">
+      <!-- Miembros -->
+      <div>
+        <h4 class="text-white text-sm font-semibold mb-2">MIEMBROS</h4>
+        <ul class="space-y-1">
+          <li><a href="miembros.html#coordinacion" class="hover:text-teal-500">Coordinación</a></li>
+          <li><a href="miembros.html#desarrollo-web" class="hover:text-teal-500">Desarrollo Web</a></li>
+          <li><a href="miembros.html#marketing" class="hover:text-teal-500">Marketing</a></li>
+        </ul>
+      </div>
+
+      <!-- Nosotros -->
+      <div>
+        <h4 class="text-white text-sm font-semibold mb-2">NOSOTROS</h4>
+        <ul class="space-y-1">
+          <li><a href="index.html#about" class="hover:text-teal-500">Acerca de nosotros</a></li>
+          <li><a href="afiliaciones.html" class="hover:text-teal-500">Afiliaciones</a></li>
+          <li><a href="miembros.html" class="hover:text-teal-500">Comunidad</a></li>
+          <li><a href="preguntas-frecuentes.html" class="hover:text-teal-500">Preguntas frecuentes</a></li>
+        </ul>
+      </div>
+
+      <!-- Legal -->
+      <div>
+        <h4 class="text-white text-sm font-semibold mb-2">LEGAL</h4>
+        <ul class="space-y-1">
+          <li><a href="legal.html" class="hover:text-teal-500">Aviso de privacidad</a></li>
+          <li><a href="legal.html" class="hover:text-teal-500">Términos y condiciones</a></li>
+        </ul>
+      </div>
+
+
+    <!-- Contacto -->
+    <div>
+      <h4 class="text-white text-sm font-semibold mb-2">Contacto</h4>
+      <p>Dudas o sugerencias:
+        <a href="mailto:owls@clubowls.com.mx" class="hover:text-teal-500">owls@clubowls.com.mx</a>
+      </p>
+      <div class="flex flex-wrap gap-3 mt-3 text-lg" aria-label="Redes sociales">
+        <a href="https://www.facebook.com/share/1BHyqFG3Pq" aria-label="Facebook" title="Facebook" class="hover:text-teal-500"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://x.com/clubowls_mx" aria-label="X" title="X (Twitter)" class="hover:text-teal-500"><i class="fab fa-x-twitter"></i></a>
+        <a href="#" aria-label="TikTok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        <a href="https://www.instagram.com/clubowls_mx?igsh=dnU4cTJzZmltaXoy" aria-label="Instagram" title="Instagram" class="hover:text-teal-500"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@clubowls_mx" aria-label="YouTube" title="YouTube" class="hover:text-teal-500"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Línea inferior -->
+  <div class="border-t border-white/10 py-3 text-center text-sm text-slate-400">
+    ©2026 OWLS Web Devs. Todos los derechos reservados.
+  </div>
+  </footer>
+
+<script type="module">
+  import { initCalendar } from '/src/calendarEvents.js';
+  initCalendar();
+  import { initNovedades } from '/src/novedades.js';
+  initNovedades();
+</script>

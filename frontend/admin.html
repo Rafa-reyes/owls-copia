@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - OWLS</title>
+    <link rel="stylesheet" href="/src/admin.css">
+    <script type="module" src="/src/session.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+    <script src="/src/theme.js"></script>
+</head>
+<body>
+    <header class="navbar-superior">
+        <div class="navbar-superior-contenido">
+            <a href="index.html" class="navbar-marca">
+                <img src="/img/owls.png" alt="OWLS logo" class="navbar-logo">
+                <span>OWLS</span>
+            </a>
+            <nav id="mainNav" class="navbar-links">
+                <a href="index.html">Home</a>
+                <a href="miembros.html">Miembros</a>
+                <a href="ranking.html">Ranking</a>
+                <button id="themeToggle" type="button" role="switch" aria-label="Cambiar tema" class="ml-2 relative h-6 w-12 shrink-0 rounded-full border border-gray-300 bg-gray-100 transition-colors dark:border-gray-700 dark:bg-gray-800">
+                    <span class="absolute left-[3px] top-1/2 grid h-[18px] w-[18px] -translate-y-1/2 place-items-center rounded-full bg-teal-500 text-[9px] text-white transition-transform duration-200 dark:translate-x-[22px]">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                    </span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="contenedor-principal">
+        <!-- MENÚ LATERAL -->
+        <aside class="menu-lateral">
+            <h2 class="titulo-menu">OWLS Admin</h2>
+            <nav>
+                <ul class="lista-menu">
+                    <li><button class="boton-menu activo" data-seccion="dashboard">Dashboard</button></li>
+                    <li><button class="boton-menu" data-seccion="gestion-owls">Gestión de OWLS</button></li>
+                    <li><button class="boton-menu" data-seccion="gestion-proyectos">Proyectos</button></li>
+                    <li><button class="boton-menu" data-seccion="cursos-eventos">Cursos</button></li>
+                    <li><button class="boton-menu" data-seccion="gestion-eventos">Eventos</button></li>
+                    <li><button class="boton-menu" data-seccion="gestion-novedades">Gestión de Novedades</button></li>
+                    <li><button class="boton-menu" data-seccion="operaciones">Operaciones Externas</button></li>
+                    <li><button class="boton-menu" data-seccion="ciberseguridad">Ciberseguridad</button></li>
+                    <li><button class="boton-menu" data-seccion="gestion-insignias">Catálogo de Insignias</button></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="area-de-contenido">
+            
+            <!-- DASHBOARD -->
+            <section id="dashboard" class="seccion-admin">
+                <h1 class="titulo-seccion">Dashboard</h1>
+                <div class="tarjetas-estadisticas"><p class="datos-tecnicos">Total Alumnos Activos: <span id="total-alumnos-activos">0</span></p></div>
+            </section>
+
+            <!-- GESTIÓN DE OWLS -->
+            <section id="gestion-owls" class="seccion-admin oculta">
+                <div class="encabezado-seccion">
+                    <div>
+                        <h1 class="titulo-seccion">Gestión de OWLS</h1>
+                        <p class="texto-normal">Administra a los miembros y sus cargos.</p>
+                    </div>
+                    <button id="btn-nuevo-miembro" type="button" class="btn-primario"><i class="fa-solid fa-user-plus"></i> Nuevo afiliado</button>
+                </div>
+                <div class="tabla-contenedor">
+                    <table class="tabla-datos">
+                        <thead><tr><th>Matrícula</th><th>Nombre</th><th>Departamento</th><th>Cargos</th><th>Acciones</th></tr></thead>
+                        <tbody id="tabla-cuerpo-miembros"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- PROYECTOS -->
+            <section id="gestion-proyectos" class="seccion-admin oculta">
+                <h1 class="titulo-seccion">Proyectos</h1>
+                <div id="crud-proyectos-container" class="crud-container mt-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold">Catálogo de Proyectos</h2>
+                        <button id="btn-nuevo-proyecto" class="btn-primario bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded">Nuevo Proyecto</button>
+                    </div>
+                    <div id="proyectos-alert" class="oculta p-3 mb-4 rounded border"></div>
+                    <div class="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
+                        <table class="tabla-datos w-full text-left border-collapse">
+                            <thead class="bg-gray-100 dark:bg-gray-700">
+                                <tr>
+                                    <th class="p-3 border-b">ID</th>
+                                    <th class="p-3 border-b">Nombre del Proyecto</th>
+                                    <th class="p-3 border-b">Fecha Inicio</th>
+                                    <th class="p-3 border-b">Fecha Fin</th>
+                                    <th class="p-3 border-b text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-cuerpo-proyectos"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="gestion-eventos" class="seccion-admin oculta">
+                <div class="encabezado-seccion">
+                    <h2>Gestión de Eventos</h2>
+                    <button id="btn-nuevo-evento" class="btn-accion btn-primario">+ Nuevo evento</button>
+                </div>
+                <table class="tabla-admin">
+                    <thead><tr><th>Nombre</th><th>Fecha inicio</th><th>Fecha fin</th><th>Lugar</th><th>Acciones</th></tr></thead>
+                    <tbody id="tabla-cuerpo-eventos"></tbody>
+                </table>
+            </section>
+
+            <!-- NOVEDADES -->
+            <section id="gestion-novedades" class="seccion-admin oculta">
+                <div class="encabezado-seccion novedades-header">
+                    <div>
+                        <h1 class="titulo-seccion">Gestión de Novedades</h1>
+                        <p class="texto-normal">Selecciona hasta 3 actividades para destacarlas en la página principal.</p>
+                    </div>
+                    <div class="contador-novedades"><span id="novedades-seleccionadas">0</span>/3</div>
+                </div>
+
+                <div id="novedades-mensaje" class="oculta"></div>
+
+                <div id="novedades-lista" class="novedades-grid">
+                    <p class="novedades-estado">Cargando actividades...</p>
+                </div>
+
+                <div class="acciones-form" style="justify-content:flex-end;">
+                    <button id="btn-guardar-novedades" type="button" class="btn-primario" style="width:auto;" disabled>
+                        Guardar destacados
+                    </button>
+                </div>
+            </section>
+
+            <section id="operaciones" class="seccion-admin oculta"><h1 class="titulo-seccion">Operaciones Externas</h1></section>
+            <section id="ciberseguridad" class="seccion-admin oculta"><h1 class="titulo-seccion">Reportes de Ciberseguridad</h1></section>
+
+            <!-- CURSOS -->
+            <section id="cursos-eventos" class="seccion-admin oculta">
+                <h1 class="titulo-seccion">Cursos</h1>
+                <div id="crud-cursos-container" class="crud-container mt-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold">Catálogo de Cursos</h2>
+                        <div class="flex items-center gap-3">
+                            <select id="filtro-departamento-cursos" class="input-form">
+                                <option value="todos">Todos los departamentos</option>
+                            </select>
+                            <button id="btn-nuevo-curso" class="btn-primario bg-teal-600 text-white px-4 py-2 rounded">Nuevo Curso</button>
+                        </div>
+                    </div>
+                    <div id="cursos-alert" class="oculta p-3 mb-4 rounded border"></div>
+                    <div class="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
+                        <table class="tabla-datos w-full text-left border-collapse">
+                            <thead class="bg-gray-100 dark:bg-gray-700">
+                                <tr><th class="p-3 border-b">ID</th><th class="p-3 border-b">Nombre</th><th class="p-3 border-b">Fecha Inicio</th><th class="p-3 border-b">Fecha Fin</th><th class="p-3 border-b text-center">Acciones</th></tr>
+                            </thead>
+                            <tbody id="tabla-cuerpo-cursos"></tbody>
+                        </table>
+                        <div id="tabla-loading" class="text-center p-6 oculta">
+                            <i class="fa-solid fa-spinner fa-spin text-2xl text-teal-600"></i>
+                            <p class="mt-2 text-gray-500">Cargando cursos...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EVENTOS -->
+            <section id="gestion-eventos" class="seccion-admin oculta">
+                <div class="encabezado-seccion">
+                    <h2>Gestión de Eventos</h2>
+                    <div class="flex items-center gap-3">
+                        <select id="filtro-departamento-eventos" class="input-form">
+                            <option value="todos">Todos los departamentos</option>
+                            <!-- TODO: agregar <option> por cada departamento real, o poblarlos por JS -->
+                        </select>
+                        <button id="btn-nuevo-evento" class="btn-accion btn-primario">+ Nuevo evento</button>
+                    </div>
+                </div>
+                <table class="tabla-admin">
+                    <thead><tr><th>Nombre</th><th>Fecha inicio</th><th>Fecha fin</th><th>Lugar</th><th>Acciones</th></tr></thead>
+                    <tbody id="tabla-cuerpo-eventos"></tbody>
+                </table>
+            </section>
+
+            <!-- EXTERNAS Y CIBERSEGURIDAD -->
+            <section id="operaciones" class="seccion-admin oculta"><h1 class="titulo-seccion">Operaciones Externas</h1></section>
+            <section id="ciberseguridad" class="seccion-admin oculta"><h1 class="titulo-seccion">Reportes de Ciberseguridad</h1></section>
+
+            <!-- CATÁLOGO DE INSIGNIAS -->
+            <section id="gestion-insignias" class="seccion-admin oculta">
+                <div class="encabezado-seccion flex justify-between items-center mb-6">
+                    <div>
+                        <h1 class="titulo-seccion text-2xl font-bold">Catálogo de Insignias</h1>
+                        <p class="texto-normal text-gray-500">Administra las insignias maestras (NetAcad u OWLS).</p>
+                    </div>
+                    <button id="btn-nueva-insignia" class="btn-primario bg-teal-600 text-white px-4 py-2 rounded">+ Nueva Insignia</button>
+                </div>
+                <div class="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
+                    <table class="tabla-datos w-full text-left border-collapse">
+                        <thead class="bg-gray-100 dark:bg-gray-700">
+                            <tr><th class="p-3 border-b">Ícono</th><th class="p-3 border-b">Nombre</th><th class="p-3 border-b">Descripción</th></tr>
+                        </thead>
+                        <tbody id="tabla-cuerpo-insignias"></tbody>
+                    </table>
+                </div>
+            </section>
+            <!-- ================================= MODALES ================================= -->
+            
+            <!-- Modal Crear/Editar Insignia -->
+            <!-- Modal Crear/Editar Insignia (UX Minimalista OWLS) -->
+            <div id="modal-insignia" class="modal-overlay oculta" aria-hidden="true">
+                <div class="modal-contenido" role="dialog" style="max-width: 420px; padding: 25px;">
+                    
+                    <!-- Botón Cerrar Nativo -->
+                    <button type="button" class="boton-cerrar-modal" data-action="cerrar-modal-insignia">&times;</button>
+                    
+                    <h2 id="modal-insignia-titulo" style="margin-bottom: 20px; font-size: 1.5rem;">Nueva Insignia</h2>
+                    
+                    <form id="form-insignia">
+                        <!-- Inputs con tu clase nativa "input-form" -->
+                        <input type="text" id="insignia-nombre" class="input-form w-full mb-3" placeholder="Nombre (Ej. Linux Essentials)" required>
+                        
+                        <textarea id="insignia-descripcion" class="input-form w-full mb-4" rows="2" placeholder="Descripción breve (Opcional)" style="resize: none;"></textarea>
+
+                        <!-- Zona de Ícono Limpia -->
+                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                            <p style="font-size: 0.75rem; color: #9ca3af; margin-bottom: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Ícono de la Insignia</p>
+                            
+                            <!-- Input URL -->
+                            <div style="position: relative; margin-bottom: 15px;">
+                                <i class="fa-solid fa-link" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; font-size: 0.9rem;"></i>
+                                <input type="url" id="insignia-url" class="input-form w-full" placeholder="URL externa (Credly, NetAcad...)" style="padding-left: 35px;">
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                                <div style="flex-grow: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
+                                <span style="margin: 0 10px; font-size: 0.7rem; color: #6b7280; font-weight: bold;">O LOCAL</span>
+                                <div style="flex-grow: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
+                            </div>
+                            
+                            <!-- Dropzone con estilos en línea a prueba de fallos -->
+                            <div id="drop-zone-insignia" style="position: relative; border: 2px dashed rgba(255,255,255,0.2); border-radius: 8px; height: 90px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: rgba(0,0,0,0.2); transition: all 0.2s; cursor: pointer;" onmouseover="this.style.borderColor='#FFA500'" onmouseout="this.style.borderColor='rgba(255,255,255,0.2)'">
+                                
+                                <!-- Input oculto por fuerza bruta -->
+                                <input type="file" id="input-file-insignia" accept="image/png, image/jpeg, image/webp" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0 !important; cursor: pointer; z-index: 10;" title="">
+                                
+                                <!-- Textos por defecto -->
+                                <div id="text-hint-insignia" style="text-align: center; pointer-events: none;">
+                                    <i class="fa-solid fa-cloud-arrow-up" style="font-size: 1.5rem; color: #9ca3af; margin-bottom: 5px;"></i>
+                                    <p style="font-size: 0.8rem; color: #d1d5db; margin: 0;">Subir imagen local</p>
+                                </div>
+                                
+                                <!-- Previsualización -->
+                                <div id="preview-container-insignia" class="hidden" style="position: absolute; inset: 0; background: #111827; display: flex; align-items: center; justify-content: center; z-index: 20;">
+                                    <img id="preview-img-insignia" src="" style="max-height: 70px; object-fit: contain;">
+                                    <button type="button" id="btn-remove-insignia" style="position: absolute; top: 8px; right: 8px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">
+                                        <i class="fa-solid fa-xmark" style="font-size: 11px;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones OWLS Nativos -->
+                        <div class="acciones-form" style="margin-top: 0;">
+                            <button type="button" class="btn-secundario" data-action="cerrar-modal-insignia">Cancelar</button>
+                            <button type="submit" id="btn-guardar-insignia" class="btn-primario" style="background-color: #FFA500; color: #111827; border: none;">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Modal Afiliado Alta -->
+            <div id="modal-alta" class="modal-overlay oculta" aria-hidden="true">
+                <div class="modal-contenido" role="dialog">
+                    <button type="button" class="boton-cerrar-modal" data-action="cerrar-modal" data-modal="modal-alta">&times;</button>
+                    <h2>Nuevo Afiliado</h2>
+                    <form id="form-alta-miembro">
+                        <input type="number" id="alta-matricula" class="input-form" placeholder="Matrícula" required min="1">
+                        <small id="error-alta-matricula" class="mensaje-error"></small>
+                        <input type="text" id="alta-nombre" class="input-form" placeholder="Nombre" required maxlength="100">
+                        <small id="error-alta-nombre" class="mensaje-error"></small>
+                        <input type="text" id="alta-ap-paterno" class="input-form" placeholder="Apellido Paterno">
+                        <input type="text" id="alta-ap-materno" class="input-form" placeholder="Apellido Materno">
+                        <input type="text" id="alta-departamentos" class="input-form" placeholder="Departamentos">
+                        <input type="text" id="alta-cargos" class="input-form" placeholder="Cargos">
+                        <div id="mensaje-alta" class="mensaje-formulario"></div>
+                        <div class="acciones-form">
+                            <button type="button" class="btn-secundario" data-action="cerrar-modal" data-modal="modal-alta">Cancelar</button>
+                            <button type="submit" class="btn-primario">Registrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal Afiliado Edición -->
+            <div id="modal-edicion" class="modal-overlay oculta" aria-hidden="true">
+                <div class="modal-contenido" role="dialog">
+                    <button type="button" class="boton-cerrar-modal" data-action="cerrar-modal" data-modal="modal-edicion">&times;</button>
+                    <h2>Editar Miembro</h2>
+                    <form id="form-editar-miembro">
+                        <input type="hidden" id="edit-matricula">
+                        <input type="text" id="edit-nombre" class="input-form" placeholder="Nombre" required maxlength="100">
+                        <small id="error-edit-nombre" class="mensaje-error"></small>
+                        <input type="text" id="edit-ap-paterno" class="input-form" placeholder="Apellido Paterno">
+                        <input type="text" id="edit-ap-materno" class="input-form" placeholder="Apellido Materno">
+                        <input type="text" id="edit-departamentos" class="input-form input-bloqueado" readonly>
+                        <input type="text" id="edit-cargos" class="input-form input-bloqueado" readonly>
+                        <div id="mensaje-edicion" class="mensaje-formulario"></div>
+                        <!-- Otorgar insignia -->
+                        <div class="mt-6 p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                            <h3 class="text-md font-bold text-gray-900 dark:text-white mb-3">Otorgar Insignia</h3>
+                            
+                            <div class="relative">
+                                <!-- Buscador de texto -->
+                                <div class="relative">
+                                    <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                    <input type="text" id="buscador-insignias" class="input-form w-full bg-white dark:bg-gray-900 pl-10" placeholder="Escribe para buscar (Ej. Ciberseguridad)..." autocomplete="off">
+                                </div>
+                                
+                                <input type="hidden" id="insignia-seleccionada-id">
+                                
+                                <!-- Caja flotante de resultados -->
+                                <div id="resultados-insignias" class="absolute z-50 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg mt-1 hidden max-h-48 overflow-y-auto">
+                                    <!-- JS inyectará los resultados aquí -->
+                                </div>
+                            </div>
+
+                            <!-- Previsualización de la selección (Oculta hasta que selecciona una) -->
+                            <div id="preview-insignia-seleccionada" class="mt-3 hidden flex items-center gap-3 p-3 border border-teal-200 bg-teal-50 dark:border-teal-900/50 dark:bg-teal-900/20 rounded-lg transition-all">
+                                <img id="img-insignia-seleccionada" src="" class="object-contain drop-shadow-md flex-shrink-0" style="width: 3rem; height: 3rem; min-width: 3rem;">
+                                <div>
+                                    <p id="txt-insignia-seleccionada" class="text-sm font-bold text-gray-900 dark:text-white"></p>
+                                    <p id="desc-insignia-seleccionada" class="text-xs text-gray-500 line-clamp-1"></p>
+                                </div>
+                            </div>
+
+                            <button type="button" id="btn-otorgar-insignia" class="mt-3 w-full btn-primario bg-teal-600 hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>Asignar
+                            </button>
+                            <span id="msg-insignia-status" class="text-sm font-medium mt-2 hidden block"></span>
+                        </div>
+                            <!-- Mensaje de éxito/error al asignar -->
+                            <span id="msg-insignia-status" class="text-sm font-medium mt-2 hidden block"></span>
+                        </div>
+                        <div class="acciones-form">
+                            <button type="button" class="btn-secundario" data-action="cerrar-modal" data-modal="modal-edicion">Cancelar</button>
+                            <button type="submit" class="btn-primario">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal Proyectos -->
+            <div id="modal-proyecto" class="modal-overlay oculta flex justify-center items-center z-50">
+                <div class="modal-contenido bg-white dark:bg-gray-900 p-6 rounded-lg w-full max-w-lg relative">
+                    <button class="boton-cerrar-modal absolute top-4 right-4" id="btn-cerrar-modal-proyecto">&times;</button>
+                    <h2 id="modal-proyecto-titulo" class="text-2xl font-bold mb-4">Nuevo Proyecto</h2>
+                    <form id="form-proyecto" class="space-y-4">
+                        <input type="hidden" id="proyecto-id">
+                        <input type="text" id="proyecto-nombre" class="input-form border p-2 w-full" placeholder="Nombre del Proyecto" required>
+                        <span class="error-msg text-red-500 text-sm hidden" id="error-proyecto-nombre"></span>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Fecha de Inicio</label>
+                                <input type="date" id="proyecto-inicio" class="input-form border p-2 w-full" title="Inicio">
+                                <span class="error-msg text-red-500 text-sm hidden" id="error-proyecto-inicio"></span>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Fecha de Fin</label>
+                                <input type="date" id="proyecto-fin" class="input-form border p-2 w-full" title="Fin">
+                                <span class="error-msg text-red-500 text-sm hidden" id="error-proyecto-fin"></span>
+                            </div>
+                        </div>
+			
+			<!-- Zona Drag & Drop para PROYECTOS -->
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Imagen del Proyecto (Opcional)</label>
+                            <div id="drop-zone-proyecto" class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:bg-gray-50 dark:hover:bg-gray-800 transition cursor-pointer relative overflow-hidden">
+                                <input type="file" id="input-file-proyecto" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/png, image/jpeg">
+                                <div id="text-hint-proyecto" class="pointer-events-none">
+                                    <i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-400 mb-2"></i>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Arrastra una imagen aquí o haz clic</p>
+                                    <p class="text-xs text-gray-400 mt-1 font-semibold">Solo PNG o JPG (Máx. 5MB)</p>
+                                </div>
+                                <div id="preview-container-proyecto" class="hidden relative z-20">
+                                    <img id="preview-img-proyecto" src="" alt="Vista previa" class="max-h-32 mx-auto rounded shadow-sm">
+                                    <button type="button" id="btn-remove-proyecto" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center -mt-2 -mr-2 hover:bg-red-600 shadow-md">
+                                        <i class="fa-solid fa-times text-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <span class="error-msg text-red-500 text-sm hidden mt-1 font-medium block" id="error-imagen-proyecto"></span>
+                        </div>
+                        
+                        <div class="acciones-form flex justify-end gap-3 mt-4">
+                            <button type="button" class="btn-secundario px-4 py-2 border rounded" id="btn-cancelar-proyecto">Cancelar</button>
+                            <button type="submit" class="btn-primario bg-purple-600 text-white px-4 py-2 rounded flex items-center hover:bg-purple-700 transition" id="btn-guardar-proyecto">
+                                <span id="btn-guardar-texto-proyecto">Guardar</span>
+                                <i id="btn-guardar-spinner-proyecto" class="fa-solid fa-spinner fa-spin ml-2 hidden"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal Cursos -->
+            <div id="modal-curso" class="modal-overlay oculta flex justify-center items-center z-50">
+                <div class="modal-contenido bg-white dark:bg-gray-900 p-6 rounded-lg w-full max-w-lg relative">
+                    <button class="boton-cerrar-modal absolute top-4 right-4" id="btn-cerrar-modal-curso">&times;</button>
+                    <h2 id="modal-curso-titulo" class="text-2xl font-bold mb-4">Nuevo Curso</h2>
+                    <form id="form-curso" class="space-y-4">
+                        <input type="hidden" id="curso-id">
+                        <input type="text" id="curso-nombre" class="input-form border p-2 w-full" placeholder="Nombre del Curso" required>
+                        <span class="error-msg text-red-500 text-sm hidden" id="error-curso-nombre"></span>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <input type="date" id="curso-inicio" class="input-form border p-2 w-full" title="Inicio">
+                                <span class="error-msg text-red-500 text-sm hidden" id="error-curso-inicio"></span>
+                            </div>
+                            <div>
+                                <input type="date" id="curso-fin" class="input-form border p-2 w-full" title="Fin">
+                                <span class="error-msg text-red-500 text-sm hidden" id="error-curso-fin"></span>
+                            </div>
+                        </div>
+                        
+                        <textarea id="curso-desc" class="input-form border p-2 w-full" rows="3" placeholder="Descripción"></textarea>
+                        
+			<!-- Zona Drag & Drop para CURSOS -->
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Imagen del Curso (Opcional)</label>
+                            <div id="drop-zone-curso" class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:bg-gray-50 dark:hover:bg-gray-800 transition cursor-pointer relative overflow-hidden">
+                                <input type="file" id="input-file-curso" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/png, image/jpeg">
+                                <div id="text-hint-curso" class="pointer-events-none">
+                                    <i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-400 mb-2"></i>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Arrastra una imagen aquí o haz clic</p>
+                                    <p class="text-xs text-gray-400 mt-1 font-semibold">Solo PNG o JPG (Máx. 5MB)</p>
+                                </div>
+                                <div id="preview-container-curso" class="hidden relative z-20">
+                                    <img id="preview-img-curso" src="" alt="Vista previa" class="max-h-32 mx-auto rounded shadow-sm">
+                                    <button type="button" id="btn-remove-curso" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center -mt-2 -mr-2 hover:bg-red-600 shadow-md">
+                                        <i class="fa-solid fa-times text-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <span class="error-msg text-red-500 text-sm hidden mt-1 font-medium block" id="error-imagen-curso"></span>
+                        </div>
+
+                        <div class="acciones-form flex justify-end gap-3">
+                            <button type="button" class="btn-secundario px-4 py-2 border rounded" id="btn-cancelar-curso">Cancelar</button>
+                            <button type="submit" class="btn-primario bg-[#FFA500] text-gray-900 px-4 py-2 rounded flex items-center" id="btn-guardar-curso">
+                                <span id="btn-guardar-texto">Guardar</span>
+                                <i id="btn-guardar-spinner" class="fa-solid fa-spinner fa-spin ml-2 hidden"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal Eventos -->
+            <div id="modal-evento" class="modal-overlay oculta">
+                <div class="modal-contenido">
+                    <h3 id="titulo-modal-evento">Nuevo evento</h3>
+                    <form id="form-evento">
+                        <input type="hidden" id="evento-id" />
+                        <input type="text" id="evento-nombre" class="input-form w-full mb-3" placeholder="Nombre del evento" required />
+                        <textarea id="evento-descripcion" class="input-form w-full mb-3" rows="3" placeholder="Descripción"></textarea>
+                        <div class="grid grid-cols-2 gap-4 mb-3">
+                            <input type="text" id="evento-fecha-inicio" class="input-form w-full" placeholder="Inicio" required />
+                            <input type="text" id="evento-fecha-fin" class="input-form w-full" placeholder="Fin" required />
+                        </div>
+                        <p id="error-fechas-evento" class="mensaje-error oculta"></p>
+                        <select id="evento-tipo" class="input-form w-full mb-3" required><option value="" disabled selected>Cargando tipos...</option></select>
+                        <select id="evento-plataforma" class="input-form w-full mb-3" required><option value="" disabled selected>Cargando plataformas...</option></select>
+			
+			<!-- Zona Drag & Drop para EVENTOS -->
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-1">Imagen del Evento (Opcional)</label>
+                            <div id="drop-zone-actividad" class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition cursor-pointer relative overflow-hidden">
+                                <input type="file" id="input-file-actividad" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/png, image/jpeg">
+                                <div id="drop-zone-text" class="pointer-events-none">
+                                    <i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-400 mb-2"></i>
+                                    <p class="text-sm text-gray-500">Arrastra una imagen aquí o haz clic</p>
+                                    <p class="text-xs text-gray-400 mt-1 font-semibold">Solo PNG o JPG (Máx. 5MB)</p>
+                                </div>
+                                <div id="image-preview-container" class="hidden relative z-20">
+                                    <img id="image-preview" src="" alt="Vista previa" class="max-h-32 mx-auto rounded shadow-sm">
+                                    <button type="button" id="btn-remove-image" class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center -mt-2 -mr-2 hover:bg-red-600 shadow-md">
+                                        <i class="fa-solid fa-times text-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <span class="error-msg text-red-500 text-sm hidden mt-1 font-medium block" id="error-imagen-actividad"></span>
+                        </div>
+			
+                        <div class="acciones-modal">
+                            <button type="button" class="btn-accion" data-action="cerrar-modal-evento">Cancelar</button>
+                            <button type="submit" class="btn-accion btn-primario">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script type="module" src="/src/admin.js"></script>
+</body>
+</html>
