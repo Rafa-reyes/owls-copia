@@ -1,0 +1,538 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model actividades {
+  id                  BigInt               @id @default(autoincrement())
+  tipo_actividad      String               @db.VarChar(50)
+  created_at          DateTime?            @db.Timestamp(0)
+  updated_at          DateTime?            @db.Timestamp(0)
+  destacado           Boolean              @default(false)
+  departamento_id     BigInt?
+  departamentos       departamentos?       @relation(fields: [departamento_id], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  cursos              cursos?
+  eventos_internos    eventos_internos?
+  proyectos           proyectos?
+  proyectos_auditoria proyectos_auditoria?
+  tutor_actividad     tutor_actividad[]
+}
+
+model alumno_cargo {
+  alumno_id BigInt
+  cargo_id  BigInt
+  alumnos   alumnos @relation(fields: [alumno_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "alumno_cargo_alumno_id_foreign")
+  cargos    cargos  @relation(fields: [cargo_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "alumno_cargo_cargo_id_foreign")
+
+  @@id([alumno_id, cargo_id])
+}
+
+model alumno_curso {
+  alumno_id         BigInt
+  curso_id          BigInt
+  estado_curso_id   BigInt
+  fecha_inscripcion DateTime      @default(dbgenerated("CURRENT_DATE")) @db.Date
+  calificacion      Decimal?      @db.Decimal(4, 2)
+  alumnos           alumnos       @relation(fields: [alumno_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "alumno_curso_alumno_id_foreign")
+  cursos            cursos        @relation(fields: [curso_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "alumno_curso_curso_id_foreign")
+  estados_curso     estados_curso @relation(fields: [estado_curso_id], references: [id], onUpdate: NoAction, map: "alumno_curso_estado_curso_id_foreign")
+
+  @@id([alumno_id, curso_id])
+}
+
+model alumno_evento {
+  id                BigInt           @id @default(autoincrement())
+  evento_interno_id BigInt
+  alumno_id         BigInt
+  comentarios       String?
+  puntos_ganados    Int              @default(0)
+  created_at        DateTime?        @db.Timestamp(0)
+  updated_at        DateTime?        @db.Timestamp(0)
+  alumnos           alumnos          @relation(fields: [alumno_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "alumno_evento_alumno_id_foreign")
+  eventos_internos  eventos_internos @relation(fields: [evento_interno_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "alumno_evento_evento_interno_id_foreign")
+}
+
+model alumno_habilidades {
+  id                 BigInt              @id @default(autoincrement())
+  alumno_id          BigInt
+  habilidad_id       BigInt
+  fecha_inicio       DateTime?           @db.Date
+  nivel_habilidad_id BigInt
+  descripcion        String?
+  created_at         DateTime?           @db.Timestamp(0)
+  updated_at         DateTime?           @db.Timestamp(0)
+  alumnos            alumnos             @relation(fields: [alumno_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "alumno_habilidades_alumno_id_foreign")
+  habilidades        habilidades         @relation(fields: [habilidad_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "alumno_habilidades_habilidad_id_foreign")
+  niveles_habilidad  niveles_habilidad   @relation(fields: [nivel_habilidad_id], references: [id], onUpdate: NoAction, map: "alumno_habilidades_nivel_habilidad_id_foreign")
+  historial_niveles  historial_niveles[]
+}
+
+model alumno_proyecto {
+  alumno_id       BigInt
+  proyecto_id     BigInt
+  rol_proyecto_id BigInt
+  fecha_ingreso   DateTime       @default(dbgenerated("CURRENT_DATE")) @db.Date
+  alumnos         alumnos        @relation(fields: [alumno_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "alumno_proyecto_alumno_id_foreign")
+  proyectos       proyectos      @relation(fields: [proyecto_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "alumno_proyecto_proyecto_id_foreign")
+  roles_proyecto  roles_proyecto @relation(fields: [rol_proyecto_id], references: [id], onUpdate: NoAction, map: "alumno_proyecto_rol_proyecto_id_foreign")
+
+  @@id([alumno_id, proyecto_id])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model alumno_salida {
+  alumno_id         BigInt
+  salida_id         BigInt
+  estado_asistencia String? @db.VarChar(255)
+  alumnos           alumnos @relation(fields: [alumno_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "alumno_salida_alumno_id_foreign")
+  salidas           salidas @relation(fields: [salida_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "alumno_salida_salida_id_foreign")
+
+  @@id([alumno_id, salida_id])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model alumnos {
+  id                  BigInt                @id @default(autoincrement())
+  usuario_id          BigInt
+  matricula           Int                   @unique(map: "alumnos_matricula_unique")
+  nombre              String                @db.VarChar(100)
+  ap_paterno          String?               @db.VarChar(100)
+  ap_materno          String?               @db.VarChar(100)
+  carrera_id          BigInt?
+  ciclo               String?               @db.VarChar(255)
+  fecha_nacimiento    DateTime?             @db.Date
+  activo              Boolean               @default(true)
+  foto_perfil         String?
+  created_at          DateTime?             @db.Timestamp(0)
+  updated_at          DateTime?             @db.Timestamp(0)
+  deleted_at          DateTime?             @db.Timestamp(0)
+  descripcion         String?
+  experiencia         String?
+  apodo               String?               @db.VarChar(50)
+  sexo                String?               @db.VarChar(10)
+  nivel_educacion     String?               @db.VarChar(100)
+  ubicacion           String?               @db.VarChar(150)
+  puntos_extra        Int                   @default(0)
+  alumno_cargo        alumno_cargo[]
+  alumno_curso        alumno_curso[]
+  alumno_departamento alumno_departamento[]
+  alumno_evento       alumno_evento[]
+  alumno_habilidades  alumno_habilidades[]
+  alumno_insignia     alumno_insignia[]
+  alumno_proyecto     alumno_proyecto[]
+  alumno_salida       alumno_salida[]
+  carreras            carreras?             @relation(fields: [carrera_id], references: [id], onUpdate: NoAction, map: "alumnos_carrera_id_foreign")
+  usuarios            usuarios              @relation(fields: [usuario_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "alumnos_usuario_id_foreign")
+  certificados        certificados[]
+  evaluaciones_cursos evaluaciones_cursos[]
+  vulnerabilidades    vulnerabilidades[]
+}
+
+model cargos {
+  id           BigInt         @id @default(autoincrement())
+  nombre       String         @db.VarChar(50)
+  created_at   DateTime?      @db.Timestamp(0)
+  updated_at   DateTime?      @db.Timestamp(0)
+  alumno_cargo alumno_cargo[]
+}
+
+model carreras {
+  id         BigInt    @id @default(autoincrement())
+  nombre     String    @db.VarChar(150)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+  alumnos    alumnos[]
+}
+
+model certificados {
+  id                 BigInt    @id @default(autoincrement())
+  alumno_id          BigInt
+  curso_id           BigInt?
+  es_interno         Boolean   @default(false)
+  plataforma         String?   @db.VarChar(100)
+  fecha_emision      DateTime? @db.Date
+  imagen_certificado String?
+  created_at         DateTime? @db.Timestamp(0)
+  updated_at         DateTime? @db.Timestamp(0)
+  alumnos            alumnos   @relation(fields: [alumno_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "certificados_alumno_id_foreign")
+  cursos             cursos?   @relation(fields: [curso_id], references: [id], onUpdate: NoAction, map: "certificados_curso_id_foreign")
+}
+
+model clientes {
+  id                 BigInt      @id @default(autoincrement())
+  usuario_id         BigInt
+  nombre_empresa     String      @db.VarChar(150)
+  contacto_principal String?     @db.VarChar(150)
+  industria          String?     @db.VarChar(100)
+  telefono           String?     @db.VarChar(20)
+  created_at         DateTime?   @db.Timestamp(0)
+  updated_at         DateTime?   @db.Timestamp(0)
+  deleted_at         DateTime?   @db.Timestamp(0)
+  usuarios           usuarios    @relation(fields: [usuario_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "clientes_usuario_id_foreign")
+  contratos          contratos[]
+}
+
+model contratos {
+  id                  BigInt                @id @default(autoincrement())
+  cliente_id          BigInt
+  servicio_id         BigInt
+  estado_contrato_id  BigInt
+  fecha_firma         DateTime?             @db.Date
+  created_at          DateTime?             @db.Timestamp(0)
+  updated_at          DateTime?             @db.Timestamp(0)
+  deleted_at          DateTime?             @db.Timestamp(0)
+  clientes            clientes              @relation(fields: [cliente_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "contratos_cliente_id_foreign")
+  estados_contrato    estados_contrato      @relation(fields: [estado_contrato_id], references: [id], onUpdate: NoAction, map: "contratos_estado_contrato_id_foreign")
+  servicios           servicios             @relation(fields: [servicio_id], references: [id], onUpdate: NoAction, map: "contratos_servicio_id_foreign")
+  proyectos_auditoria proyectos_auditoria[]
+}
+
+model cursos {
+  id                  BigInt                @id
+  nombre              String                @db.VarChar(150)
+  fecha_inicio        DateTime?             @db.Date
+  fecha_terminacion   DateTime?             @db.Date
+  descripcion         String?
+  created_at          DateTime?             @db.Timestamp(0)
+  updated_at          DateTime?             @db.Timestamp(0)
+  deleted_at          DateTime?             @db.Timestamp(0)
+  alumno_curso        alumno_curso[]
+  certificados        certificados[]
+  actividades         actividades           @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "cursos_id_foreign")
+  evaluaciones_cursos evaluaciones_cursos[]
+}
+
+model estados_contrato {
+  id         BigInt      @id @default(autoincrement())
+  nombre     String      @db.VarChar(50)
+  created_at DateTime?   @db.Timestamp(0)
+  updated_at DateTime?   @db.Timestamp(0)
+  contratos  contratos[]
+}
+
+model estados_curso {
+  id           BigInt         @id @default(autoincrement())
+  nombre       String         @db.VarChar(50)
+  created_at   DateTime?      @db.Timestamp(0)
+  updated_at   DateTime?      @db.Timestamp(0)
+  alumno_curso alumno_curso[]
+}
+
+model evaluaciones_actitud {
+  id                   BigInt              @id @default(autoincrement())
+  evaluacion_curso_id  BigInt
+  responsabilidad      Int?
+  etica_respeto        Int?
+  proactividad         Int?
+  adaptabilidad        Int?
+  colaboracion         Int?
+  total_puntos_actitud Int?
+  comentarios_actitud  String?
+  created_at           DateTime?           @db.Timestamp(0)
+  updated_at           DateTime?           @db.Timestamp(0)
+  evaluaciones_cursos  evaluaciones_cursos @relation(fields: [evaluacion_curso_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "evaluaciones_actitud_evaluacion_curso_id_foreign")
+}
+
+model evaluaciones_cursos {
+  id                   BigInt                 @id @default(autoincrement())
+  alumno_id            BigInt
+  curso_id             BigInt
+  dominio_conceptos    Int?
+  resolucion_problemas Int?
+  uso_herramientas     Int?
+  autonomia_tecnica    Int?
+  aplicacion_practica  Int?
+  total_puntos         Int?
+  nivel                Int?
+  comentarios          String?
+  created_at           DateTime?              @db.Timestamp(0)
+  updated_at           DateTime?              @db.Timestamp(0)
+  evaluaciones_actitud evaluaciones_actitud[]
+  alumnos              alumnos                @relation(fields: [alumno_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "evaluaciones_cursos_alumno_id_foreign")
+  cursos               cursos                 @relation(fields: [curso_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "evaluaciones_cursos_curso_id_foreign")
+}
+
+model eventos_internos {
+  id             BigInt          @id
+  tipo_evento_id BigInt
+  plataforma_id  BigInt
+  nombre_evento  String?         @db.VarChar(150)
+  fecha_inicio   DateTime?       @db.Timestamp(0)
+  fecha_fin      DateTime?       @db.Timestamp(0)
+  descripcion    String?
+  created_at     DateTime?       @db.Timestamp(0)
+  updated_at     DateTime?       @db.Timestamp(0)
+  alumno_evento  alumno_evento[]
+  actividades    actividades     @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "eventos_internos_id_foreign")
+  plataformas    plataformas     @relation(fields: [plataforma_id], references: [id], onUpdate: NoAction, map: "eventos_internos_plataforma_id_foreign")
+  tipos_evento   tipos_evento    @relation(fields: [tipo_evento_id], references: [id], onUpdate: NoAction, map: "eventos_internos_tipo_evento_id_foreign")
+}
+
+model habilidades {
+  id                 BigInt               @id @default(autoincrement())
+  nombre             String               @db.VarChar(100)
+  created_at         DateTime?            @db.Timestamp(0)
+  updated_at         DateTime?            @db.Timestamp(0)
+  alumno_habilidades alumno_habilidades[]
+}
+
+model historial_niveles {
+  id                  BigInt             @id @default(autoincrement())
+  alumno_habilidad_id BigInt
+  nivel_habilidad_id  BigInt
+  fecha_cambio        DateTime           @default(dbgenerated("CURRENT_DATE")) @db.Date
+  created_at          DateTime?          @db.Timestamp(0)
+  updated_at          DateTime?          @db.Timestamp(0)
+  alumno_habilidades  alumno_habilidades @relation(fields: [alumno_habilidad_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "historial_niveles_alumno_habilidad_id_foreign")
+  niveles_habilidad   niveles_habilidad  @relation(fields: [nivel_habilidad_id], references: [id], onUpdate: NoAction, map: "historial_niveles_nivel_habilidad_id_foreign")
+}
+
+model incidentes {
+  id                    BigInt              @id @default(autoincrement())
+  proyecto_auditoria_id BigInt
+  tipo_incidente        String?             @db.VarChar(150)
+  impacto               String?
+  created_at            DateTime?           @db.Timestamp(0)
+  updated_at            DateTime?           @db.Timestamp(0)
+  proyectos_auditoria   proyectos_auditoria @relation(fields: [proyecto_auditoria_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "incidentes_proyecto_auditoria_id_foreign")
+}
+
+model migrations {
+  id        Int    @id @default(autoincrement())
+  migration String @db.VarChar(255)
+  batch     Int
+}
+
+model niveles_habilidad {
+  id                 BigInt               @id @default(autoincrement())
+  nombre             String               @db.VarChar(50)
+  created_at         DateTime?            @db.Timestamp(0)
+  updated_at         DateTime?            @db.Timestamp(0)
+  alumno_habilidades alumno_habilidades[]
+  historial_niveles  historial_niveles[]
+}
+
+model patrocinadores {
+  id                    BigInt                  @id @default(autoincrement())
+  tipo_entidad_id       BigInt
+  nombre_patrocinador   String                  @db.VarChar(150)
+  calle                 String?                 @db.VarChar(150)
+  numero_exterior       Int?
+  colonia               String?                 @db.VarChar(150)
+  codigo_postal         Int?
+  numero_interior       Int?
+  telefono              String?                 @db.VarChar(20)
+  correo                String?                 @db.VarChar(150)
+  created_at            DateTime?               @db.Timestamp(0)
+  updated_at            DateTime?               @db.Timestamp(0)
+  tipos_entidad         tipos_entidad           @relation(fields: [tipo_entidad_id], references: [id], onUpdate: NoAction, map: "patrocinadores_tipo_entidad_id_foreign")
+  proyecto_patrocinador proyecto_patrocinador[]
+}
+
+model plataformas {
+  id               BigInt             @id @default(autoincrement())
+  nombre           String             @db.VarChar(50)
+  created_at       DateTime?          @db.Timestamp(0)
+  updated_at       DateTime?          @db.Timestamp(0)
+  eventos_internos eventos_internos[]
+}
+
+model proyecto_patrocinador {
+  proyecto_id       BigInt
+  patrocinador_id   BigInt
+  descripcion_ayuda String?
+  fecha_patrocinio  DateTime?      @db.Date
+  monto_estimado    Decimal?       @db.Decimal(12, 2)
+  patrocinadores    patrocinadores @relation(fields: [patrocinador_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "proyecto_patrocinador_patrocinador_id_foreign")
+  proyectos         proyectos      @relation(fields: [proyecto_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "proyecto_patrocinador_proyecto_id_foreign")
+
+  @@id([proyecto_id, patrocinador_id])
+}
+
+model proyectos {
+  id                    BigInt                  @id
+  nombre                String                  @db.VarChar(150)
+  inicio                DateTime?               @db.Date
+  fin                   DateTime?               @db.Date
+  created_at            DateTime?               @db.Timestamp(0)
+  updated_at            DateTime?               @db.Timestamp(0)
+  deleted_at            DateTime?               @db.Timestamp(0)
+  alumno_proyecto       alumno_proyecto[]
+  proyecto_patrocinador proyecto_patrocinador[]
+  actividades           actividades             @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "proyectos_id_foreign")
+}
+
+model proyectos_auditoria {
+  id               BigInt             @id
+  contrato_id      BigInt
+  alcance          String?
+  created_at       DateTime?          @db.Timestamp(0)
+  updated_at       DateTime?          @db.Timestamp(0)
+  deleted_at       DateTime?          @db.Timestamp(0)
+  incidentes       incidentes[]
+  contratos        contratos          @relation(fields: [contrato_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "proyectos_auditoria_contrato_id_foreign")
+  actividades      actividades        @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "proyectos_auditoria_id_foreign")
+  vulnerabilidades vulnerabilidades[]
+}
+
+model roles_proyecto {
+  id              BigInt            @id @default(autoincrement())
+  nombre          String            @db.VarChar(50)
+  created_at      DateTime?         @db.Timestamp(0)
+  updated_at      DateTime?         @db.Timestamp(0)
+  alumno_proyecto alumno_proyecto[]
+}
+
+model roles_usuario {
+  id          BigInt        @id @default(autoincrement())
+  nombre      String        @db.VarChar(50)
+  created_at  DateTime?     @db.Timestamp(0)
+  updated_at  DateTime?     @db.Timestamp(0)
+  usuario_rol usuario_rol[]
+}
+
+model salidas {
+  id            BigInt          @id @default(autoincrement())
+  nombre        String          @db.VarChar(150)
+  fecha         DateTime?       @db.Date
+  hora          DateTime?       @db.Time(0)
+  created_at    DateTime?       @db.Timestamp(0)
+  updated_at    DateTime?       @db.Timestamp(0)
+  alumno_salida alumno_salida[]
+}
+
+model servicios {
+  id          BigInt      @id @default(autoincrement())
+  nombre      String      @db.VarChar(150)
+  descripcion String?
+  created_at  DateTime?   @db.Timestamp(0)
+  updated_at  DateTime?   @db.Timestamp(0)
+  contratos   contratos[]
+}
+
+model severidades {
+  id               BigInt             @id @default(autoincrement())
+  nombre           String             @db.VarChar(50)
+  created_at       DateTime?          @db.Timestamp(0)
+  updated_at       DateTime?          @db.Timestamp(0)
+  vulnerabilidades vulnerabilidades[]
+}
+
+model tipos_entidad {
+  id             BigInt           @id @default(autoincrement())
+  nombre         String           @db.VarChar(50)
+  created_at     DateTime?        @db.Timestamp(0)
+  updated_at     DateTime?        @db.Timestamp(0)
+  patrocinadores patrocinadores[]
+}
+
+model tipos_evento {
+  id               BigInt             @id @default(autoincrement())
+  nombre           String             @db.VarChar(50)
+  created_at       DateTime?          @db.Timestamp(0)
+  updated_at       DateTime?          @db.Timestamp(0)
+  eventos_internos eventos_internos[]
+}
+
+model tutor_actividad {
+  tutor_id     BigInt
+  actividad_id BigInt
+  rol          String?     @db.VarChar(50)
+  actividades  actividades @relation(fields: [actividad_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "tutor_actividad_actividad_id_foreign")
+  tutores      tutores     @relation(fields: [tutor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "tutor_actividad_tutor_id_foreign")
+
+  @@id([tutor_id, actividad_id])
+}
+
+model tutores {
+  id              BigInt            @id @default(autoincrement())
+  usuario_id      BigInt
+  nombre          String            @db.VarChar(150)
+  ap_paterno      String?           @db.VarChar(150)
+  ap_materno      String?           @db.VarChar(150)
+  telefono        String?           @db.VarChar(20)
+  activo          Boolean           @default(true)
+  created_at      DateTime?         @db.Timestamp(0)
+  updated_at      DateTime?         @db.Timestamp(0)
+  deleted_at      DateTime?         @db.Timestamp(0)
+  tutor_actividad tutor_actividad[]
+  usuarios        usuarios          @relation(fields: [usuario_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "tutores_usuario_id_foreign")
+}
+
+model usuarios {
+  id                BigInt        @id @default(autoincrement())
+  correo            String        @unique(map: "usuarios_correo_unique") @db.VarChar(150)
+  password          String        @db.VarChar(255)
+  intentos_fallidos Int           @default(0)
+  bloqueado_hasta   DateTime?     @db.Timestamp(0)
+  created_at        DateTime?     @db.Timestamp(0)
+  updated_at        DateTime?     @db.Timestamp(0)
+  deleted_at        DateTime?     @db.Timestamp(0)
+  alumnos           alumnos[]
+  clientes          clientes[]
+  tutores           tutores[]
+  usuario_rol       usuario_rol[]
+}
+
+model vulnerabilidades {
+  id                    BigInt              @id @default(autoincrement())
+  proyecto_auditoria_id BigInt
+  alumno_id             BigInt?
+  severidad_id          BigInt
+  titulo                String              @db.VarChar(200)
+  estado                String              @default("Abierta") @db.VarChar(50)
+  evidencia             String?
+  created_at            DateTime?           @db.Timestamp(0)
+  updated_at            DateTime?           @db.Timestamp(0)
+  deleted_at            DateTime?           @db.Timestamp(0)
+  alumnos               alumnos?            @relation(fields: [alumno_id], references: [id], onUpdate: NoAction, map: "vulnerabilidades_alumno_id_foreign")
+  proyectos_auditoria   proyectos_auditoria @relation(fields: [proyecto_auditoria_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "vulnerabilidades_proyecto_auditoria_id_foreign")
+  severidades           severidades         @relation(fields: [severidad_id], references: [id], onUpdate: NoAction, map: "vulnerabilidades_severidad_id_foreign")
+}
+
+model departamentos {
+  id                  BigInt                @id @default(autoincrement())
+  nombre              String                @db.VarChar(100)
+  created_at          DateTime?             @db.Timestamp(0)
+  alumno_departamento alumno_departamento[]
+  actividades         actividades[]
+}
+
+model insignias {
+  id              BigInt            @id @default(autoincrement())
+  nombre          String            @db.VarChar(100)
+  icono           String?           @db.VarChar(150)
+  descripcion     String?
+  alumno_insignia alumno_insignia[]
+}
+
+model alumno_insignia {
+  alumno_id    BigInt
+  insignia_id  BigInt
+  fecha_ganada DateTime  @default(dbgenerated("CURRENT_DATE")) @db.Date
+  alumnos      alumnos   @relation(fields: [alumno_id], references: [id], onDelete: Cascade)
+  insignias    insignias @relation(fields: [insignia_id], references: [id], onDelete: Cascade)
+
+  @@id([alumno_id, insignia_id])
+}
+
+model usuario_rol {
+  usuario_id    BigInt
+  rol_id        BigInt
+  roles_usuario roles_usuario @relation(fields: [rol_id], references: [id], onDelete: Cascade)
+  usuarios      usuarios      @relation(fields: [usuario_id], references: [id], onDelete: Cascade)
+
+  @@id([usuario_id, rol_id])
+}
+
+model alumno_departamento {
+  alumno_id       BigInt
+  departamento_id BigInt
+  alumnos         alumnos       @relation(fields: [alumno_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  departamentos   departamentos @relation(fields: [departamento_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([alumno_id, departamento_id])
+}
